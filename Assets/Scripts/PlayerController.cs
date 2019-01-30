@@ -6,6 +6,7 @@ using Cinemachine;
 public class PlayerController : AbstractPlayerController {
     public CinemachineVirtualCamera vCam;
     [HideInInspector] private Transform vCamTransform;
+
     void Awake() {
         base.Init();
         vCamTransform = vCam.GetComponent<Transform>();
@@ -15,30 +16,36 @@ public class PlayerController : AbstractPlayerController {
         if (Input.GetKeyDown(KeyCode.Mouse0)) {
             Vector2 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition);
             if (pos.x > 0.5) {
-                TurnTo(TurnDirection.LEFT);
+                TurnTo(TurnDirection.RIGHT);
             }
             else if (pos.x < 0.5) {
-                TurnTo(TurnDirection.RIGHT);
+                TurnTo(TurnDirection.LEFT);
             }
         }
     }
 
     public void TurnTo(TurnDirection direction) {
-        switch (direction) {
-            case TurnDirection.LEFT:
-                StartCoroutine(Turn(-90, -1));
-                break;
-            case TurnDirection.RIGHT:
-                StartCoroutine(Turn(90, 1));
-                break;
+        int sign = direction == TurnDirection.RIGHT ? -1 : 1;
+        if (isSpiningNow) {
+            StopAllCoroutines();
+            float currentAngel = vCamTransform.rotation.eulerAngles.z;
+            float divisionRightAngle = Mathf.Abs(currentAngel % 90) * sign;
+            float divisionLeftAngle = 90 - Mathf.Abs(currentAngel % 90) * sign;
+            float angle = direction == TurnDirection.RIGHT ? divisionRightAngle : divisionLeftAngle;
+            StartCoroutine(Turn(angle, -1));
+        } else {
+            StartCoroutine(Turn(sign * 90, sign));
         }
+
     }
 
     public override void MoveUp() {
         rb2d.MovePosition(rb2d.position + (Vector2) rb2dTransform.up * speed * Time.fixedDeltaTime);
     }
 
+    private bool isSpiningNow;
     public IEnumerator Turn(float angle, int sign) {
+        isSpiningNow = true;
         float timeCount = 0.0f;
         Quaternion endRot = vCamTransform.rotation * Quaternion.Euler(0, 0, angle);
         Quaternion startVcamRot = vCamTransform.rotation;
@@ -47,11 +54,12 @@ public class PlayerController : AbstractPlayerController {
             vCamTransform.rotation = Quaternion.Slerp(startVcamRot, endRot, timeCount);
             rb2dTransform.rotation = Quaternion.Slerp(start_rb2Rot, endRot, timeCount);
             timeCount += Time.deltaTime * speedAngle;
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForFixedUpdate();
         }
 
         vCamTransform.rotation = endRot;
         rb2dTransform.rotation = endRot;
+        isSpiningNow = false;
         yield return null;
     }
 }

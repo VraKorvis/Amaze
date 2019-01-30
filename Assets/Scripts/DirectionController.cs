@@ -9,7 +9,7 @@ public class DirectionController : AbstractPlayerController {
     private Vector2 fingerStartPos = Vector2.zero;
 
     private bool isSwipe = false;
-    private float minSwipeDist = 50.0f;
+    [SerializeField] private float minSwipeDist = 10.0f;
     private float maxSwipeTime = 1.5f;
     private bool autoMove = true;
 
