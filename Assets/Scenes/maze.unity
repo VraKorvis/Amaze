@@ -6583,9 +6583,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e653f567da57504ca8edf8d7246e5ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 4.51
-  speedAngle: 4.57
-  minSwipeDist: 50
+  speed: 6.7
+  speedAngle: 7.01
+  minSwipeDist: 10
 --- !u!1 &1976804709
 GameObject:
   m_ObjectHideFlags: 0

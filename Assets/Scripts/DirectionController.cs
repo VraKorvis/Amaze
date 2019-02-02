@@ -9,7 +9,7 @@ public class DirectionController : AbstractPlayerController {
     private Vector2 fingerStartPos = Vector2.zero;
 
     private bool isSwipe = false;
-    [SerializeField] private float minSwipeDist = 10.0f;
+    [SerializeField] private float minSwipeDist = 1.0f;
     private float maxSwipeTime = 1.5f;
     private bool autoMove = true;
 
@@ -56,7 +56,9 @@ public class DirectionController : AbstractPlayerController {
         if (autoMove) {
             rb2d.MovePosition(rb2d.position + direction * speed * Time.fixedDeltaTime);
         }
+
         MoveDir();
+     //   MoveTapDir();
     }
 
     private void MoveDir() {
@@ -96,6 +98,7 @@ public class DirectionController : AbstractPlayerController {
                                 MoveTouchDir(TurnDirection.LEFT);
                             }
                         }
+
                         if (swipeType.y != 0.0f) {
                             if (swipeType.y > 0.0f) {
                                 // MOVE UP
@@ -106,8 +109,18 @@ public class DirectionController : AbstractPlayerController {
                             }
                         }
                     }
+
                     break;
             }
         }
     }
+
+    private void MoveTapDir() {
+       
+        if (Input.GetKeyDown(KeyCode.Mouse0)) {
+            Vector3 pos = Camera.main.WorldToScreenPoint(Input.mousePosition);
+           Debug.Log(pos);
+        }
+    }
+ 
 }
