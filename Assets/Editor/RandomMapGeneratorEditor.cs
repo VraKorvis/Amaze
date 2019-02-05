@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 [CustomEditor(typeof(RandomMapGenerator))]
-public class RandomMamGeneratorEditor : Editor {
+public class RandomMapGeneratorEditor : Editor {
  
     public override void OnInspectorGUI() {
        //DrawDefaultInspector();

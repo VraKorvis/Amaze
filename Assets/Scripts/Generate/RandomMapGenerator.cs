@@ -16,7 +16,7 @@ public class RandomMapGenerator : MonoBehaviour {
 
     [Space] [Header("Map Sprites")] public Texture2D mazeTexure;
 
-    [Space] [Header("Decorate Maze")] [Range(0, 0.9f)]
+    [Space] [Header("Decorate Map")] [Range(0, 0.9f)]
     public float erodePercent = 0.5f;
     public int erodeIterations = 2;
     [Range(0, 0.9f)]
@@ -54,8 +54,8 @@ public class RandomMapGenerator : MonoBehaviour {
 
     void CreateGrid() {
         Sprite[] sprites = Resources.LoadAll<Sprite>(mazeTexure.name);
-        var total = map.tiles.Length;  //example total = 20x20 = 400
-        var maxColumns = map.columns; //20
+        var total = map.tiles.Length;  
+        var maxColumns = map.columns; 
         var column = 0;
         var row = 0;
 
@@ -75,10 +75,7 @@ public class RandomMapGenerator : MonoBehaviour {
             if (spriteID >= 0) {
                 var spriteRenderer = go.GetComponent<SpriteRenderer>();
                 spriteRenderer.sprite = sprites[spriteID];
-               // Debug.Log(spriteID);
             }
-
-           
 
             if (column == (maxColumns-1)) {
                 row++;
@@ -86,20 +83,12 @@ public class RandomMapGenerator : MonoBehaviour {
         }
     }
 
-
     public void CenterMapCamera(int index) {
-
         var camPos = Camera.main.transform.position;
         var width = map.columns;
         camPos.x = (index % width) * tileSize.x;
         camPos.y = -((index / width) * tileSize.y);
         Camera.main.transform.position = camPos;
-
-
     }
 
-    // Update is called once per frame
-    void Update () {
-		
-	}
 }

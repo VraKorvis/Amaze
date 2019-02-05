@@ -14,43 +14,32 @@ public enum TileType {
     Monster = 21
 }
 
-public class MapM {
-    public TileM[] tiles;
-    public int columns;
-    public int rows;
-
+public class MapM : AbstractMap {
     public TileM[] CoastTiles {
         get { return tiles.Where(t => t.autotileID < (int) TileType.Grass).ToArray(); }
     }
-
     public TileM[] LandTiles {
         get { return tiles.Where(t => t.autotileID == (int) TileType.Grass).ToArray(); }
     }
-
     public TileM CastleTile {
         get { return tiles.FirstOrDefault(t => t.autotileID == (int) TileType.Castle); }
     }
-
-    public void NewMap(int columns, int rows) {
+    public override void NewMap(int columns, int rows) {
         this.columns = columns;
         this.rows = rows;
         tiles = new TileM[columns * rows];
-        CreatesTiles();
+        CreateTiles();
     }
-
-    private void CreatesTiles() {
+    protected override void CreateTiles() {
         var total = tiles.Length;
-
         for (int i = 0; i < total; i++) {
             var tile = new TileM();
             tile.id = i;
             tiles[i] = tile;
         }
-
         FindNeighbors();
     }
-
-    private void FindNeighbors() {
+    protected override void FindNeighbors() {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
                 var tile = tiles[columns * r + c];
@@ -72,7 +61,6 @@ public class MapM {
             }
         }
     }
-
     public void CreateIsland(
         float erodePercent,
         int erodeIterations,
@@ -99,7 +87,6 @@ public class MapM {
         DecorateTIles(LandTiles, townPercent, TileType.Towns);
         DecorateTIles(LandTiles, monsterPErcent, TileType.Monster);
     }
-
     public void DecorateTIles(TileM[] tiles, float percent, TileType type) {
         var total = Mathf.FloorToInt(tiles.Length * percent);
         RandomiseTileArray(tiles);
@@ -124,5 +111,4 @@ public class MapM {
             tiles[r] = tmp;
         }
     }
-
 }
