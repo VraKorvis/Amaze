@@ -20,6 +20,9 @@ public class Maze : AbstractMap {
     public TileM[] GroundTiles {
         get { return tiles.Where(t => t.Type == TileTypeMaze.Ground).ToArray(); }
     }
+    public TileM StartTile {
+        get { return tiles.FirstOrDefault(t => t.Type == TileTypeMaze.StartPoint); }
+    }
 
     #region Create_Maze
     public override void NewMap(int columns, int rows) {

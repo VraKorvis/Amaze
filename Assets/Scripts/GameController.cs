@@ -2,8 +2,9 @@
 using System.Collections;
 
 public enum ModeController {
-    Static,
     Dynamic,
+    Static
+    
 }
 
 public class GameController : MonoBehaviour {
@@ -13,22 +14,39 @@ public class GameController : MonoBehaviour {
     private AbstractPlayerController characterController;
     public ModeController modeOfController;
 
+   [SerializeField] private RandomMazeGenerator rmg;
+
     void Awake() {
         instance = this;
+        modeOfController = ModeController.Dynamic;
+    }
+
+    public void GenerateMaze() {
+        Invoke("Generate", 1f);
+    }
+
+    private void Generate() {
+        StopAllCoroutines();
+        character.SetActive(false);
+        ((PlayerController)characterController).vCam.gameObject.SetActive(false);
+        rmg.MakeMaze();
     }
     
-    // Use this for initialization
     void Start() {
         SetController(modeOfController);
+        rmg.OnCreateMaze += InitialPlayerPosition;
     }
 
-    // Update is called once per frame
-    void Update() {
-        characterController.TurnCharacter();
-    }
-
-    void FixedUpdate() {
-        characterController.MoveUp();
+    private void InitialPlayerPosition() {
+        TileM startTile = rmg.maze.StartTile;
+        if (startTile != null) {
+            character.SetActive(true);
+            character.transform.position = startTile.Tile.transform.position;
+            characterController.move = true;
+            StartCoroutine(characterController.TurnCharacter());
+            StartCoroutine(characterController.MoveUp());
+            ((PlayerController)characterController).vCam.gameObject.SetActive(true);
+        }
     }
 
     public void SetController(ModeController mode) {

@@ -18,7 +18,9 @@ public class DirectionController : AbstractPlayerController {
         direction = rb2dTransform.up;
     }
 
-    public override void TurnCharacter() { }
+    public override IEnumerator TurnCharacter() {
+        yield return null;
+    }
 
     public void MoveKeyDir() {
         if (Input.GetKey(KeyCode.RightArrow)) {
@@ -52,13 +54,13 @@ public class DirectionController : AbstractPlayerController {
         }
     }
 
-    public override void MoveUp() {
+    public override IEnumerator MoveUp() {
         if (autoMove) {
             rb2d.MovePosition(rb2d.position + direction * speed * Time.fixedDeltaTime);
         }
-
         MoveDir();
-     //   MoveTapDir();
+        yield return null;
+        //   MoveTapDir();
     }
 
     private void MoveDir() {

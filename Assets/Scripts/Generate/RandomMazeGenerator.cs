@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine.UI;
 
 public delegate void ChangeSizeCameraEvent(int columns);
+public delegate void CreateMazeEvent();
 
 public class RandomMazeGenerator : MonoBehaviour {
     [SerializeField] [Header("PerfectPixelCamera")]
@@ -22,8 +23,9 @@ public class RandomMazeGenerator : MonoBehaviour {
     [Space] [Header("Map Sprite Texture")] public Texture2D mazeTexure;
 
     public event ChangeSizeCameraEvent OnChangeCameraSize;
-
-    [SerializeField] [Header("Delay draw one moving")]
+    public event CreateMazeEvent OnCreateMaze;
+        
+   [SerializeField] [Header("Delay draw one moving")]
     private float delay = 1.5f;
 
     [SerializeField] private Slider slide;
@@ -135,6 +137,9 @@ public class RandomMazeGenerator : MonoBehaviour {
         }
         yield return null;
         AddStartEndPoint();
+        if (OnCreateMaze != null) {
+            OnCreateMaze();
+        }
     }
 
     private int DirectionDetermination(TileM focusTile, TileM tile) {

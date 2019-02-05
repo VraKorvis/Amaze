@@ -4,6 +4,7 @@ using Cinemachine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : AbstractPlayerController {
+
     public CinemachineVirtualCamera vCam;
     [HideInInspector] private Transform vCamTransform;
 
@@ -12,22 +13,24 @@ public class PlayerController : AbstractPlayerController {
         vCamTransform = vCam.GetComponent<Transform>();
     }
 
-    public override void TurnCharacter() {
-        if (Input.GetKeyDown(KeyCode.Mouse0)) {
-            Vector2 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition);
-            if (pos.x > 0.5) {
-                TurnTo(TurnDirection.RIGHT);
+    public override IEnumerator TurnCharacter() {
+        while (move) {
+            if (Input.GetKeyDown(KeyCode.Mouse0)) {
+                Vector2 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition);
+                if (pos.x > 0.5) {
+                    TurnTo(TurnDirection.RIGHT);
+                } else if (pos.x < 0.5) {
+                    TurnTo(TurnDirection.LEFT);
+                }
             }
-            else if (pos.x < 0.5) {
-                TurnTo(TurnDirection.LEFT);
-            }
+            yield return null;
         }
     }
 
     public void TurnTo(TurnDirection direction) {
         int sign = direction == TurnDirection.RIGHT ? -1 : 1;
         if (isSpiningNow) {
-            StopAllCoroutines();
+            StopCoroutine("Turn");
             float currentAngel = vCamTransform.rotation.eulerAngles.z;
             float divisionRightAngle = Mathf.Abs(currentAngel % 90) * sign;
             float divisionLeftAngle = 90 - Mathf.Abs(currentAngel % 90) * sign;
@@ -39,8 +42,11 @@ public class PlayerController : AbstractPlayerController {
 
     }
 
-    public override void MoveUp() {
-        rb2d.MovePosition(rb2d.position + (Vector2) rb2dTransform.up * speed * Time.fixedDeltaTime);
+    public override IEnumerator MoveUp() {
+        while (move) {
+            rb2d.MovePosition(rb2d.position + (Vector2) rb2dTransform.up * speed * Time.fixedDeltaTime);
+            yield return new WaitForFixedUpdate();
+        }
     }
 
     private bool isSpiningNow;

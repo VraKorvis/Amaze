@@ -3,10 +3,14 @@ using System.Collections;
 using Cinemachine;
 
 public abstract class AbstractPlayerController : MonoBehaviour {
+
+   
+
     protected Rigidbody2D rb2d;
     protected Transform rb2dTransform;
+    public bool move;
 
-    [Range(0f, 10f)] public float speed;
+    [Range(0f, 100f)] public float speed;
     [Range(0, 10f)] public float speedAngle;
 
     public void Init() {
@@ -15,7 +19,7 @@ public abstract class AbstractPlayerController : MonoBehaviour {
         
     }
 
-    public abstract void TurnCharacter();
+    public abstract IEnumerator TurnCharacter();
 
-    public abstract void MoveUp();
+    public abstract IEnumerator MoveUp();
 }
