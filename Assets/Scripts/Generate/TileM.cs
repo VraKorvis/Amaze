@@ -59,7 +59,7 @@ public class TileM {
         CalculateAutotileID();
     }
 
-    private void CalculateAutotileID() {
+    public void CalculateAutotileID() {
         var sideValues = new StringBuilder();
         foreach (TileM tile in neighbors) {
             sideValues.Append(tile == null ? "0" : "1");

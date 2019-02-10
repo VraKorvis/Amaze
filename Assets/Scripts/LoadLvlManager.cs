@@ -11,7 +11,7 @@ public class LoadLvlManager : MonoBehaviour {
         DontDestroyOnLoad(this);
     }
     public void LoadNewGame() {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(2);
     }
 
     public void LoadMenu() {

@@ -24,6 +24,10 @@ public class Maze : AbstractMap {
         get { return tiles.FirstOrDefault(t => t.Type == TileTypeMaze.StartPoint); }
     }
 
+    public TileM[] WallTiles {
+        get { return tiles.Where(t => t.Type == TileTypeMaze.Wall).ToArray(); }
+    }
+
     #region Create_Maze
     public override void NewMap(int columns, int rows) {
         this.columns = columns;

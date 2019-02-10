@@ -4,7 +4,6 @@ using System.Collections;
 public enum ModeController {
     Dynamic,
     Static
-    
 }
 
 public class GameController : MonoBehaviour {

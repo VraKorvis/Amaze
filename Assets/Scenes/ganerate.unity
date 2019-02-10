@@ -786,6 +786,11 @@ Prefab:
       propertyPath: mazeHeight
       value: 21
       objectReference: {fileID: 0}
+    - target: {fileID: 114254878811304862, guid: 88c9e975820a4c248af9ee02a22b7f27,
+        type: 2}
+      propertyPath: countLoop
+      value: 30
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 88c9e975820a4c248af9ee02a22b7f27, type: 2}
   m_IsPrefabAsset: 0

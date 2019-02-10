@@ -21,11 +21,12 @@ public class RandomMazeGenerator : MonoBehaviour {
     public Vector2 tileSize = new Vector2(16, 16);
 
     [Space] [Header("Map Sprite Texture")] public Texture2D mazeTexure;
+    [Space] [Header("Count Loop")] public int countLoop;
 
     public event ChangeSizeCameraEvent OnChangeCameraSize;
     public event CreateMazeEvent OnCreateMaze;
         
-   [SerializeField] [Header("Delay draw one moving")]
+    [SerializeField] [Header("Delay draw one moving")]
     private float delay = 1.5f;
 
     [SerializeField] private Slider slide;
@@ -46,6 +47,26 @@ public class RandomMazeGenerator : MonoBehaviour {
         CreateGrid();
         CenterMapCamera(mazeWidth * mazeHeight /2);
     }
+
+    private void CreateLoop() {
+        var wallTiles = maze.WallTiles;
+        maze.RandomiseTileArray(wallTiles);
+        for (int i = 0; i < countLoop; i++) {
+            if (IsCorner(wallTiles[i])) continue;
+            DrawTile(wallTiles[i], TileTypeMaze.Ground, true);
+        }
+    }
+
+    private bool IsCorner(TileM tile) {
+        var neighbors = tile.neighbors;
+        if ( (neighbors[(int) Sides.Bottom].Type == TileTypeMaze.Wall || neighbors[(int)Sides.Top].Type == TileTypeMaze.Wall) &&
+            (neighbors[(int) Sides.Right].Type == TileTypeMaze.Wall ||
+             neighbors[(int) Sides.Left].Type == TileTypeMaze.Wall)) {
+            return true;
+        }
+        return false;
+    }
+
     private void AddStartEndPoint() {
         var grounds = maze.GroundTiles;
         maze.RandomiseTileArray(grounds);
@@ -74,25 +95,20 @@ public class RandomMazeGenerator : MonoBehaviour {
 
             var go = Instantiate(tilePrefab);
             maze.tiles[i].Tile = go;
-            go.name = "Tile " + i;
-            go.transform.SetParent(mazeContainer.transform);
-            go.transform.position = new Vector3(newX, newY, 0);
+            TileM tile = maze.tiles[i];
+            tile.Tile.name = "Tile " + i;
+            tile.Tile.transform.SetParent(mazeContainer.transform);
+            tile.Tile.transform.position = new Vector3(newX, newY, 0);
             var bc = go.AddComponent<BoxCollider2D>();
             bc.size = tileSize;
-
-            TileM tile = maze.tiles[i];
+            
             var spriteID = tile.autotileID;
-
-            var spriteRenderer = go.GetComponent<SpriteRenderer>();
             if (!tile.isVisited) {
                 if (column == 0 || row == 0 || column == (maxColumns - 1) || row == (maxColumns - 1)) {
-                    spriteRenderer.sprite = sprites[(int) TileTypeMaze.OutWall];
-                    tile.isVisited = true;
-                    tile.Type = TileTypeMaze.OutWall;
+                    DrawTile(tile, TileTypeMaze.OutWall, true);
                 } else {
-                    spriteRenderer.sprite = sprites[(int) TileTypeMaze.Wall];
-                    tile.isVisited = false;
-                    tile.Type = TileTypeMaze.Wall;
+                    DrawTile(tile, TileTypeMaze.Wall, false);
+                   
                 }
             }
 
@@ -107,7 +123,7 @@ public class RandomMazeGenerator : MonoBehaviour {
         TileM[] tiles = maze.tiles;
         Stack<TileM> stack = new Stack<TileM>();
         TileM focusTile = tiles[InitFirstCell()];
-        DrawTile(focusTile, TileTypeMaze.Ground);
+        DrawTile(focusTile, TileTypeMaze.Ground, true);
         while (true) {
             bool canVisited;
             do {
@@ -121,14 +137,14 @@ public class RandomMazeGenerator : MonoBehaviour {
                         canVisited = true;
                         stack.Push(neighborThCell);
                         int index = DirectionDetermination(focusTile, neighborThCell);
-                        DrawTile(focusTile.neighbors[index], TileTypeMaze.Ground);
+                        DrawTile(focusTile.neighbors[index], TileTypeMaze.Ground, true);
                         focusTile = neighborThCell;
-                        DrawTile(focusTile, TileTypeMaze.Ground);
+                        DrawTile(focusTile, TileTypeMaze.Ground, true);
                         break;
                     }
                 }
             } while (canVisited);
-            DrawTile(focusTile, TileTypeMaze.Ground);
+            DrawTile(focusTile, TileTypeMaze.Ground, true);
             if (stack.Count != 0) {
                 focusTile = stack.Pop();
             } else {
@@ -136,6 +152,7 @@ public class RandomMazeGenerator : MonoBehaviour {
             }
         }
         yield return null;
+        CreateLoop();
         AddStartEndPoint();
         if (OnCreateMaze != null) {
             OnCreateMaze();
@@ -150,13 +167,14 @@ public class RandomMazeGenerator : MonoBehaviour {
         return 0;
     }
 
-    private void DrawTile(TileM tile, TileTypeMaze type) {
-        tile.isVisited = true;
-        tile.Type = TileTypeMaze.Ground;
+    private void DrawTile(TileM tile, TileTypeMaze type, bool markVisited) {
+        tile.isVisited = markVisited;
+        tile.Type = type;
         var sr = tile.Tile.GetComponent<SpriteRenderer>();
-        sr.sprite = sprites[(int) TileTypeMaze.Ground];
+        sr.sprite = type == TileTypeMaze.Ground ? null : sprites[(int)type];
         var bc = tile.Tile.GetComponent<BoxCollider2D>();
-        bc.enabled = false;
+        bc.enabled = type == TileTypeMaze.Ground ? false : true;
+        tile.CalculateAutotileID();
     }
 
     private int InitFirstCell() {
