@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine.UI;
 
 public delegate void ChangeSizeCameraEvent(int columns);
+
 public delegate void CreateMazeEvent();
 
 public class RandomMazeGenerator : MonoBehaviour {
@@ -25,7 +26,7 @@ public class RandomMazeGenerator : MonoBehaviour {
 
     public event ChangeSizeCameraEvent OnChangeCameraSize;
     public event CreateMazeEvent OnCreateMaze;
-        
+
     [SerializeField] [Header("Delay draw one moving")]
     private float delay = 1.5f;
 
@@ -43,9 +44,10 @@ public class RandomMazeGenerator : MonoBehaviour {
         if (OnChangeCameraSize != null) {
             OnChangeCameraSize(mazeWidth);
         }
+
         maze.NewMap(mazeWidth, mazeHeight);
         CreateGrid();
-        CenterMapCamera(mazeWidth * mazeHeight /2);
+        //CenterMapCamera(mazeWidth * mazeHeight /2);
     }
 
     private void CreateLoop() {
@@ -59,11 +61,13 @@ public class RandomMazeGenerator : MonoBehaviour {
 
     private bool IsCorner(TileM tile) {
         var neighbors = tile.neighbors;
-        if ( (neighbors[(int) Sides.Bottom].Type == TileTypeMaze.Wall || neighbors[(int)Sides.Top].Type == TileTypeMaze.Wall) &&
+        if ((neighbors[(int) Sides.Bottom].Type == TileTypeMaze.Wall ||
+             neighbors[(int) Sides.Top].Type == TileTypeMaze.Wall) &&
             (neighbors[(int) Sides.Right].Type == TileTypeMaze.Wall ||
              neighbors[(int) Sides.Left].Type == TileTypeMaze.Wall)) {
             return true;
         }
+
         return false;
     }
 
@@ -77,7 +81,7 @@ public class RandomMazeGenerator : MonoBehaviour {
         start.Tile.GetComponent<BoxCollider2D>().enabled = false;
         TileM end = grounds[1];
         sr = end.Tile.GetComponent<SpriteRenderer>();
-        sr.sprite = sprites[(int)TileTypeMaze.EndPoint];
+        sr.sprite = sprites[(int) TileTypeMaze.EndPoint];
         end.Type = TileTypeMaze.EndPoint;
         end.Tile.GetComponent<BoxCollider2D>().isTrigger = true;
     }
@@ -101,14 +105,13 @@ public class RandomMazeGenerator : MonoBehaviour {
             tile.Tile.transform.position = new Vector3(newX, newY, 0);
             var bc = go.AddComponent<BoxCollider2D>();
             bc.size = tileSize;
-            
+
             var spriteID = tile.autotileID;
             if (!tile.isVisited) {
                 if (column == 0 || row == 0 || column == (maxColumns - 1) || row == (maxColumns - 1)) {
                     DrawTile(tile, TileTypeMaze.OutWall, true);
                 } else {
                     DrawTile(tile, TileTypeMaze.Wall, false);
-                   
                 }
             }
 
@@ -116,6 +119,7 @@ public class RandomMazeGenerator : MonoBehaviour {
                 row++;
             }
         }
+
         StartCoroutine(GenerateMaze());
     }
 
@@ -144,6 +148,7 @@ public class RandomMazeGenerator : MonoBehaviour {
                     }
                 }
             } while (canVisited);
+
             DrawTile(focusTile, TileTypeMaze.Ground, true);
             if (stack.Count != 0) {
                 focusTile = stack.Pop();
@@ -151,11 +156,71 @@ public class RandomMazeGenerator : MonoBehaviour {
                 break;
             }
         }
+
         yield return null;
         CreateLoop();
         AddStartEndPoint();
+        FindIsland();
         if (OnCreateMaze != null) {
             OnCreateMaze();
+        }
+    }
+
+    private void FindIsland() {
+
+        var tiles = maze.WallTiles;
+        maze.IslandTiles = new List<List<TileM>>();
+        var list = maze.IslandTiles;
+        var newIsland = new List<TileM>();
+
+        for (int i = 0; i < tiles.Length; i++) {
+            if (tiles[i].IsBorderingOuterWall) continue;
+            //if (tiles[i].IsIsland) continue;
+
+            Stack<TileM> stack = new Stack<TileM>();
+            stack.Push(tiles[i]);
+            newIsland = new List<TileM>();
+            do {
+                TileM focus = stack.Pop();
+                focus.IsIsland = true;
+                newIsland.Add(focus);
+
+                var neighbors = focus.neighbors;
+                for (int j = 0; j < neighbors.Length; j++) {
+                    if (neighbors[j].Type == TileTypeMaze.OutWall || neighbors[j].IsBorderingOuterWall) {
+                        focus.IsBorderingOuterWall = true;
+                        foreach (var t in newIsland) {
+                            t.IsBorderingOuterWall = true;
+                        }
+                        stack.Clear();
+                        newIsland.Clear();
+                        break;
+                    }
+
+                    if (neighbors[j].Type == TileTypeMaze.Wall) {
+                        if (!neighbors[j].IsIsland) {
+                            if (!neighbors[j].IsBorderingOuterWall) {
+                                stack.Push(neighbors[j]);
+                            }
+                        }
+                        
+                    }
+                }
+            } while (stack.Count > 0);
+
+            if (newIsland.Count > 0) {
+                list.Add(newIsland);
+            }
+        }
+
+        HighLightIslands();
+    }
+
+    private void HighLightIslands() {
+        foreach (var island in maze.IslandTiles) {
+            foreach (var tile in island) {
+                DrawTile(tile, TileTypeMaze.OutWall, true);
+            }
         }
     }
 
@@ -171,7 +236,7 @@ public class RandomMazeGenerator : MonoBehaviour {
         tile.isVisited = markVisited;
         tile.Type = type;
         var sr = tile.Tile.GetComponent<SpriteRenderer>();
-        sr.sprite = type == TileTypeMaze.Ground ? null : sprites[(int)type];
+        sr.sprite = type == TileTypeMaze.Ground ? null : sprites[(int) type];
         var bc = tile.Tile.GetComponent<BoxCollider2D>();
         bc.enabled = type == TileTypeMaze.Ground ? false : true;
         tile.CalculateAutotileID();
@@ -189,6 +254,7 @@ public class RandomMazeGenerator : MonoBehaviour {
             (id / maze.rows == maze.rows - 1)) {
             return true;
         }
+
         return false;
     }
 

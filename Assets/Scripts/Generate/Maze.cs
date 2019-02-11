@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using JetBrains.Annotations;
@@ -16,10 +17,10 @@ public enum TileTypeMaze {
 }
 
 public class Maze : AbstractMap {
-
     public TileM[] GroundTiles {
         get { return tiles.Where(t => t.Type == TileTypeMaze.Ground).ToArray(); }
     }
+
     public TileM StartTile {
         get { return tiles.FirstOrDefault(t => t.Type == TileTypeMaze.StartPoint); }
     }
@@ -28,7 +29,15 @@ public class Maze : AbstractMap {
         get { return tiles.Where(t => t.Type == TileTypeMaze.Wall).ToArray(); }
     }
 
+    private List<List<TileM>> islandTiles = new List<List<TileM>>();
+
+    public List<List<TileM>> IslandTiles {
+        get { return islandTiles; }
+        set { islandTiles = value; }
+    }
+
     #region Create_Maze
+
     public override void NewMap(int columns, int rows) {
         this.columns = columns;
         this.rows = rows;
@@ -44,6 +53,7 @@ public class Maze : AbstractMap {
             tile.id = i;
             tiles[i] = tile;
         }
+
         FindNeighbors();
         FindNeighborsThroughCell();
     }
@@ -55,12 +65,15 @@ public class Maze : AbstractMap {
                 if (r < rows - 1) {
                     tile.AddNeighbor(Sides.Bottom, tiles[columns * (r + 1) + c]);
                 }
+
                 if (c < columns - 1) {
                     tile.AddNeighbor(Sides.Right, tiles[columns * r + (c + 1)]);
                 }
+
                 if (c > 0) {
                     tile.AddNeighbor(Sides.Left, tiles[columns * r + (c - 1)]);
                 }
+
                 if (r > 0) {
                     tile.AddNeighbor(Sides.Top, tiles[columns * (r - 1) + c]);
                 }
@@ -75,18 +88,22 @@ public class Maze : AbstractMap {
                 if (r < rows - 2) {
                     tile.AddNeighborThroughCell(Sides.Bottom, tiles[columns * (r + 2) + c]);
                 }
+
                 if (c < columns - 2) {
                     tile.AddNeighborThroughCell(Sides.Right, tiles[columns * r + (c + 2)]);
                 }
+
                 if (c > 1) {
                     tile.AddNeighborThroughCell(Sides.Left, tiles[columns * r + (c - 2)]);
                 }
+
                 if (r > 1) {
                     tile.AddNeighborThroughCell(Sides.Top, tiles[columns * (r - 2) + c]);
                 }
             }
         }
     }
+
     #endregion
 
     public void RandomiseTileArray(TileM[] tiles) {

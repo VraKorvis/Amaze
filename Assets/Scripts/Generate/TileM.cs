@@ -20,6 +20,8 @@ public class TileM {
     public bool isVisited = false;
     public TileTypeMaze Type { get; set; }
 
+    public bool IsIsland { get; set; }
+    public bool IsBorderingOuterWall { get; set; }
     public GameObject Tile { get; set; }
 
     public TileM[] CopyNeighbors {
