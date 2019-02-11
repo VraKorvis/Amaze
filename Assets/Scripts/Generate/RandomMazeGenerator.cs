@@ -67,7 +67,6 @@ public class RandomMazeGenerator : MonoBehaviour {
              neighbors[(int) Sides.Left].Type == TileTypeMaze.Wall)) {
             return true;
         }
-
         return false;
     }
 
