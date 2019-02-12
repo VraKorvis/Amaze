@@ -1,10 +1,5 @@
-﻿using System;
-using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using JetBrains.Annotations;
 using Random = UnityEngine.Random;
 
 public enum TileTypeMaze {
@@ -13,7 +8,9 @@ public enum TileTypeMaze {
     Ground = 21,
     OutWall = 16,
     StartPoint = 26,
-    EndPoint = 26
+    EndPoint = 26,
+    Island = 28
+
 }
 
 public class Maze : AbstractMap {
@@ -29,12 +26,13 @@ public class Maze : AbstractMap {
         get { return tiles.Where(t => t.Type == TileTypeMaze.Wall).ToArray(); }
     }
 
-    private List<List<TileM>> islandTiles = new List<List<TileM>>();
-
-    public List<List<TileM>> IslandTiles {
-        get { return islandTiles; }
-        set { islandTiles = value; }
+    public TileM[] WayGroundTiles {
+        get { return tiles.Where(t => t.Type == TileTypeMaze.Ground).ToArray(); }
     }
+
+    public List<List<TileM>> IslandTiles { get; set; }
+
+    public List<List<TileM>> FreeIslands { get; set; }
 
     #region Create_Maze
 

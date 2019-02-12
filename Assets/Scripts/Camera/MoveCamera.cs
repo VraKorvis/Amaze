@@ -5,11 +5,15 @@ using UnityEngine;
 
 public class MoveCamera : MonoBehaviour {
 
-    [SerializeField] private CinemachineVirtualCamera vcam;
+    [SerializeField] private CinemachineVirtualCamera vCam;
     public float speed = 4.0f;
 
     private Vector3 startPos;
     private bool isMoving;
+
+    void Start() {
+        //vCam = GameObject.Find("CM vcam1").GetComponent<CinemachineVirtualCamera>();
+    }
 
     void FixedUpdate() {
         if (Input.GetMouseButtonDown(1)) {
@@ -19,11 +23,11 @@ public class MoveCamera : MonoBehaviour {
 
         if (Input.GetMouseButtonUp(1) && isMoving) {
             isMoving = false;
-            vcam.enabled = true;
+            vCam.enabled = true;
         }
 
         if (isMoving) {
-            vcam.enabled = false;
+            vCam.enabled = false;
             Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - startPos);
             Vector3 move = new Vector3(pos.x*speed, pos.y * speed, 0);
             transform.Translate(move, Space.Self);

@@ -10,11 +10,12 @@ public class PlayerController : AbstractPlayerController {
 
     void Awake() {
         base.Init();
+        //vCam = GameObject.Find("CM vcam1").GetComponent<CinemachineVirtualCamera>();
         vCamTransform = vCam.GetComponent<Transform>();
     }
 
     public override IEnumerator TurnCharacter() {
-        while (move) {
+        while (isMoving) {
             if (Input.GetKeyDown(KeyCode.Mouse0)) {
                 Vector2 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition);
                 if (pos.x > 0.5) {
@@ -43,7 +44,7 @@ public class PlayerController : AbstractPlayerController {
     }
 
     public override IEnumerator MoveUp() {
-        while (move) {
+        while (isMoving) {
             rb2d.MovePosition(rb2d.position + (Vector2) rb2dTransform.up * speed * Time.fixedDeltaTime);
             yield return new WaitForFixedUpdate();
         }

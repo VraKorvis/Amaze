@@ -32,6 +32,11 @@ public class RandomMazeGenerator : MonoBehaviour {
 
     [SerializeField] private Slider slide;
 
+    public static RandomMazeGenerator instance;
+    public void Awake() {
+        instance = this;
+    }
+
     void Start() {
         maze = new Maze();
         sprites = Resources.LoadAll<Sprite>(mazeTexure.name);
@@ -39,6 +44,7 @@ public class RandomMazeGenerator : MonoBehaviour {
     }
 
     public void MakeMaze() {
+        maze = new Maze();
         StopAllCoroutines();
         ClearMap();
         if (OnChangeCameraSize != null) {
@@ -158,11 +164,18 @@ public class RandomMazeGenerator : MonoBehaviour {
 
         yield return null;
         CreateLoop();
+        FindWayGroundTiles();
         AddStartEndPoint();
         FindIsland();
         if (OnCreateMaze != null) {
             OnCreateMaze();
         }
+    }
+
+    // TODO
+    private void FindWayGroundTiles() {
+        TileM focus = maze.GroundTiles[0];
+
     }
 
     private void FindIsland() {
@@ -218,7 +231,7 @@ public class RandomMazeGenerator : MonoBehaviour {
     private void HighLightIslands() {
         foreach (var island in maze.IslandTiles) {
             foreach (var tile in island) {
-                DrawTile(tile, TileTypeMaze.OutWall, true);
+                DrawTile(tile, TileTypeMaze.Island, true);
             }
         }
     }
@@ -272,10 +285,11 @@ public class RandomMazeGenerator : MonoBehaviour {
         Camera.main.transform.position = camPos;
     }
 
-    private enum Direction {
-        Bot,
-        Right,
-        Left,
-        Top
-    }
+    
+}
+public enum Direction {
+    Bot,
+    Right,
+    Left,
+    Top
 }
