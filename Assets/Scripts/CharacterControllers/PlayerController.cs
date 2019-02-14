@@ -43,7 +43,7 @@ public class PlayerController : AbstractPlayerController {
 
     }
 
-    public override IEnumerator MoveUp() {
+    public override IEnumerator Move() {
         while (isMoving) {
             rb2d.MovePosition(rb2d.position + (Vector2) rb2dTransform.up * speed * Time.fixedDeltaTime);
             yield return new WaitForFixedUpdate();

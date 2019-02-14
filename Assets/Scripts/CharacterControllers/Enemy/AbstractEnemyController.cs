@@ -7,7 +7,7 @@ public abstract  class AbstractEnemyController : AbstractPlayerController {
     protected LayerMask layer;
     protected bool spiningNow;
 
-    public override IEnumerator MoveUp() {
+    public override IEnumerator Move() {
         SetPosition();
         while (isMoving) {
             rb2d.MovePosition(rb2d.position + (Vector2)rb2dTransform.up * speed * Time.fixedDeltaTime);

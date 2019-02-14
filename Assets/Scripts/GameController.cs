@@ -53,22 +53,33 @@ public class GameController : MonoBehaviour {
         SetController(modeOfController);
         rmg.OnCreateMaze += InitialPlayerPosition;
         rmg.OnCreateMaze += InitialEnemyPosition;
+        InitialPlayer();
+        InitialEnemyPosition();
+        
+    }
+
+    private void InitialPlayer() {
+        characterController.isMoving = true;
+        StartCoroutine(characterController.TurnCharacter());
+        StartCoroutine(characterController.Move());
+        ((PlayerController)characterController).vCam.gameObject.SetActive(true);
     }
 
     private void InitialEnemyPosition() {
         foreach (var e in spiritsIsland) {
             var go = Instantiate<GameObject>(e);
-            go.transform.SetParent(spiritsContainer.transform);
+            go.transform.SetParent(spiritsContainer.transform, true);
             AbstractPlayerController spirit = go.GetComponent<AbstractPlayerController>();
-            StartCoroutine(spirit.TurnCharacter());
-            StartCoroutine(spirit.MoveUp());
+            
+            //StartCoroutine(spirit.TurnCharacter());
+            //StartCoroutine(spirit.MoveUp());
         }
         foreach (var e in spiritsBackForth) {
             var go = Instantiate<GameObject>(e);
-            go.transform.SetParent(spiritsContainer.transform);
+            go.transform.SetParent(spiritsContainer.transform, true);
             AbstractPlayerController spirit = go.GetComponent<AbstractPlayerController>();
            // StartCoroutine(spirit.TurnCharacter());
-            StartCoroutine(spirit.MoveUp());
+           // StartCoroutine(spirit.Move());
         }
 
     }
@@ -80,7 +91,7 @@ public class GameController : MonoBehaviour {
             character.transform.position = startTile.Tile.transform.position;
             characterController.isMoving = true;
             StartCoroutine(characterController.TurnCharacter());
-            StartCoroutine(characterController.MoveUp());
+            StartCoroutine(characterController.Move());
             ((PlayerController) characterController).vCam.gameObject.SetActive(true);
         }
     }

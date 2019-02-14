@@ -8,7 +8,7 @@ public class WallTile : Tile {
     [SerializeField] private Sprite preview;
 
     public override void GetTileData(Vector3Int position, ITilemap tilemap, ref TileData tileData) {
-        //base.GetTileData(position, tilemap, ref tileData);
+        base.GetTileData(position, tilemap, ref tileData);
 
         StringBuilder autotileID = new StringBuilder();
         StringBuilder autoID = new StringBuilder();
@@ -88,7 +88,7 @@ public class WallTile : Tile {
     }
 
     public override void RefreshTile(Vector3Int position, ITilemap tilemap) {
-        // base.RefreshTile(position, tilemap);
+        base.RefreshTile(position, tilemap);
         for (int y = -1; y <= 1; y++) {
             for (int x = -1; x <= 1; x++) {
                 Vector3Int nPos = new Vector3Int(position.x + x, position.y + y, position.z);

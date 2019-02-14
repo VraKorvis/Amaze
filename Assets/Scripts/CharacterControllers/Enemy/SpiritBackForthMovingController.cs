@@ -75,7 +75,7 @@ public class SpiritBackForthMovingController : AbstractEnemyController {
         yield return null;
     }
 
-    public override IEnumerator MoveUp() {
+    public override IEnumerator Move() {
         SetPosition();
         int index = 0;
         while (index < distance-1) {
