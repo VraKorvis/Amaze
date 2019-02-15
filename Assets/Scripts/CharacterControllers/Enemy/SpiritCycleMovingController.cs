@@ -13,7 +13,7 @@ public class SpiritCycleMovingController : AbstractEnemyController {
         layer = ~LayerMask.NameToLayer("Wall");
     }
 
-    protected override void SetPosition() {
+    public override void SetPosition() {
         SetWay();
         if (island == null || island.Count==0) {
             isMoving = false;
@@ -37,6 +37,10 @@ public class SpiritCycleMovingController : AbstractEnemyController {
         rb2dTransform.position = emptyTile.Tile.transform.position;
         rb2dTransform.LookAt2D(rb2dTransform.up, focus.Tile.transform);
        
+    }
+
+    public override IEnumerator SmoothMovement() {
+        throw new System.NotImplementedException();
     }
 
     private void SetWay() {

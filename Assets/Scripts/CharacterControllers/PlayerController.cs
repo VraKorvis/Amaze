@@ -1,12 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Cinemachine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : AbstractPlayerController {
 
     public CinemachineVirtualCamera vCam;
-    [HideInInspector] private Transform vCamTransform;
+    [HideInInspector] public Transform vCamTransform;
+    [Range(0.1f, 1f)]public float motionCoef;
+    [SerializeField] private Slider sliderMotion;
+    [SerializeField] private Slider sliderSpeed;
 
     void Awake() {
         base.Init();
@@ -43,9 +47,16 @@ public class PlayerController : AbstractPlayerController {
 
     }
 
-    public override IEnumerator Move() {
+    public override void Move() {
+        StartCoroutine(SmoothMove());
+    }
+
+    public IEnumerator SmoothMove() {
         while (isMoving) {
-            rb2d.MovePosition(rb2d.position + (Vector2) rb2dTransform.up * speed * Time.fixedDeltaTime);
+            motionCoef = sliderMotion.value;
+            speed = sliderSpeed.value;
+            float motion = isSpiningNow ? motionCoef : 1f;
+            rb2d.MovePosition(rb2d.position + (Vector2)rb2dTransform.up * speed * Time.fixedDeltaTime * motion);
             yield return new WaitForFixedUpdate();
         }
     }
@@ -74,10 +85,16 @@ public class PlayerController : AbstractPlayerController {
         if (other.CompareTag("EnemySpirit")) {
             GameController.instance.SetPlayerPosition();
         }
+        if (other.CompareTag("Exit")) {
+            GameController.instance.SetPlayerPosition();
+        }
     }
     
     public void OnCollisionEnter2D(Collision2D other) {
         if (other.gameObject.CompareTag("EnemySpirit")) {
+            GameController.instance.SetPlayerPosition();
+        }
+        if (other.gameObject.CompareTag("Exit")) {
             GameController.instance.SetPlayerPosition();
         }
     }

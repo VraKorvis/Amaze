@@ -54,7 +54,11 @@ public class DirectionController : AbstractPlayerController {
         }
     }
 
-    public override IEnumerator Move() {
+    public override void Move() {
+        StartCoroutine(SmoothMovement());
+    }
+
+    private IEnumerator SmoothMovement() {
         if (autoMove) {
             rb2d.MovePosition(rb2d.position + direction * speed * Time.fixedDeltaTime);
         }

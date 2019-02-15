@@ -9,30 +9,30 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1148398660232522}
+  m_RootGameObject: {fileID: 1743260315532330}
   m_IsPrefabAsset: 1
---- !u!1 &1148398660232522
+--- !u!1 &1743260315532330
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4156867383629856}
-  - component: {fileID: 120463457992928840}
+  - component: {fileID: 4487963756635442}
+  - component: {fileID: 120797585515518398}
   m_Layer: 0
-  m_Name: WayPoints 1
+  m_Name: WayPointsBezie
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4156867383629856
+--- !u!4 &4487963756635442
 Transform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1148398660232522}
+  m_GameObject: {fileID: 1743260315532330}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.55, y: 0.33, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -40,12 +40,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!120 &120463457992928840
+--- !u!120 &120797585515518398
 LineRenderer:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1148398660232522}
+  m_GameObject: {fileID: 1743260315532330}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -76,13 +76,17 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: 4.2869143, y: -4.1080256, z: 0}
-  - {x: 3.1805015, y: -3.4523737, z: 0}
-  - {x: 1.951153, y: -3.1245477, z: 0}
-  - {x: 0.88571835, y: -3.0835695, z: 0}
-  - {x: 0.43495607, y: -3.903135, z: 0}
-  - {x: 0.8447404, y: -4.5997653, z: 0}
-  - {x: 4.2049584, y: -4.2719393, z: 0}
+  - {x: -4.4346895, y: -6.402221, z: 0}
+  - {x: -1.4703575, y: -6.402221, z: 0}
+  - {x: -1.4703575, y: -7.414432, z: 0}
+  - {x: -0.49429584, y: -7.3782816, z: 0}
+  - {x: -0.49429584, y: -6.32992, z: 0}
+  - {x: -0.42199564, y: -4.5947013, z: 0}
+  - {x: 0.48176384, y: -4.233197, z: 0}
+  - {x: 0.51791406, y: -3.3294377, z: 0}
+  - {x: -3.2417264, y: -3.3655882, z: 0}
+  - {x: -4.47084, y: -4.4500995, z: 0}
+  - {x: -4.5792913, y: -6.29377, z: 0}
   m_Parameters:
     serializedVersion: 2
     widthMultiplier: 0.1

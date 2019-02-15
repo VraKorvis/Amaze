@@ -6,7 +6,7 @@ public class SpiritBackForthMovingController : AbstractEnemyController {
     public int distance = 5;
     private TileM[] wayPoint;
 
-    protected override void SetPosition() {
+    public override void SetPosition() {
         var tiles = RandomMazeGenerator.instance.maze.GroundTiles;
         TileM focus = tiles[Random.Range(0, tiles.Length)];
         wayPoint[0] = focus;
@@ -75,16 +75,15 @@ public class SpiritBackForthMovingController : AbstractEnemyController {
         yield return null;
     }
 
-    public override IEnumerator Move() {
-        SetPosition();
+    public override  IEnumerator SmoothMovement() {
         int index = 0;
-        while (index < distance-1) {
+        while (index < distance - 1) {
             TileM focus = wayPoint[index];
             for (int i = focus.neighbors.Length - 1; i >= 0; i--) {
                 TileM neighbor = focus.neighbors[i];
                 if (neighbor.Type == TileTypeMaze.Ground) {
                     rb2dTransform.LookAt2D(rb2dTransform.up, neighbor.Tile.transform);
-                    rb2d.MovePosition(rb2d.position + (Vector2) rb2dTransform.up * speed * Time.fixedDeltaTime);
+                    rb2d.MovePosition(rb2d.position + (Vector2)rb2dTransform.up * speed * Time.fixedDeltaTime);
                     index++;
                     wayPoint[index] = neighbor;
                     break;
@@ -99,8 +98,8 @@ public class SpiritBackForthMovingController : AbstractEnemyController {
         while (isMoving) {
             TileM focus = wayPoint[index];
             rb2dTransform.LookAt2D(rb2dTransform.up, focus.Tile.transform);
-            rb2d.MovePosition(rb2d.position + (Vector2) rb2dTransform.up * speed * Time.fixedDeltaTime);
-            
+            rb2d.MovePosition(rb2d.position + (Vector2)rb2dTransform.up * speed * Time.fixedDeltaTime);
+
             if (pingpongswitch) {
                 index--;
                 if (index == 0) pingpongswitch = false;
@@ -112,5 +111,10 @@ public class SpiritBackForthMovingController : AbstractEnemyController {
         }
 
         yield return null;
+    }
+
+    public override void Move() {
+        SetPosition();
+        
     }
 }

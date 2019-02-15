@@ -2,35 +2,26 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class EnemyBezieMove : AbstractEnemyController {
-
-    private Vector3[] ways;
-    public float moveTime = 0.1f;
-    public float reachDist = 1.0f;
-
-    private readonly List<Vector3> bezierPath = new List<Vector3>();
+public class SpiritBezieMoving : AbstractEnemyController {
+    private float reachDist = 1.0f;
+    public int count_points = 20;
 
     public void Awake() {
         base.Init();
     }
 
-    public void Start() {
-        ways = new Vector3[WayPointController.instance.waySimple[0].positionCount];
-        WayPointController.instance.waySimple[0].GetPositions(ways);
-        inverseMoveTime = 1f / moveTime;
-        SetPosition();
-        StartCoroutine(PathBezierCurve(10));
-    }
+    [HideInInspector] public readonly List<Vector3> bezierPath = new List<Vector3>();
 
     public override IEnumerator TurnCharacter() {
-        yield return null;
+        throw new System.NotImplementedException();
     }
 
-    protected override void SetPosition() {
-        rb2dTransform.position = ways[0];
+    public override void Move() {
+        StartCoroutine(BezieMoving());
     }
 
-    public IEnumerator PathBezierCurve(int count_points) {
+    private IEnumerator BezieMoving() {
+        isMoving = false;
         bezierPath.Clear();
         var positions = ways;
         var size = positions.Length;
@@ -43,11 +34,12 @@ public class EnemyBezieMove : AbstractEnemyController {
                 bezierPath.Add(BezierCurve.CubicBezier(0, p0, p1, p2, p3));
             }
             for (int J = 1; J <= count_points; J++) {
-                float t = J / (float)count_points;
+                float t = J / (float) count_points;
                 bezierPath.Add(BezierCurve.CubicBezier(t, p0, p1, p2, p3));
                 yield return null;
             }
         }
+        isMoving = true;
         StartCoroutine(MoveToPoint());
     }
 
@@ -63,7 +55,8 @@ public class EnemyBezieMove : AbstractEnemyController {
                     yield return new WaitForFixedUpdate();
 
                     float distance = Vector3.Distance(end_pos, rb2dTransform.position);
-                    rb2dTransform.position = Vector3.MoveTowards(rb2dTransform.position, end_pos, speed * Time.deltaTime);
+                    rb2dTransform.position =
+                        Vector3.MoveTowards(rb2dTransform.position, end_pos, speed * Time.deltaTime);
                     Vector3 dest = (end_pos - rb2dTransform.position).normalized;
                     float angle = VectorUtil.GetAngle(Vector3.down, dest) * Mathf.Rad2Deg;
                     rb2dTransform.rotation = Quaternion.Slerp(rb2dTransform.rotation, Quaternion.Euler(0, 0, angle),
@@ -74,9 +67,8 @@ public class EnemyBezieMove : AbstractEnemyController {
                 }
             }
         }
-        
-
     }
+
 #if UNITY_EDITOR
     private void DrawBezier() {
         //  if (bezierPath.Count==0) return;
@@ -87,6 +79,4 @@ public class EnemyBezieMove : AbstractEnemyController {
         });
     }
 #endif
-
-
 }

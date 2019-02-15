@@ -7,8 +7,14 @@ public abstract  class AbstractEnemyController : AbstractPlayerController {
     protected LayerMask layer;
     protected bool spiningNow;
 
-    public override IEnumerator Move() {
+    [HideInInspector] public Vector3[] ways;
+
+    public override void Move() {
         SetPosition();
+        StartCoroutine(SmoothMovement());
+    }
+
+    public virtual IEnumerator SmoothMovement() {
         while (isMoving) {
             rb2d.MovePosition(rb2d.position + (Vector2)rb2dTransform.up * speed * Time.fixedDeltaTime);
             yield return new WaitForFixedUpdate();
@@ -16,5 +22,9 @@ public abstract  class AbstractEnemyController : AbstractPlayerController {
         yield return null;
     }
 
-    protected abstract void SetPosition();
+    public virtual void SetPosition() {
+        rb2dTransform.position = ways[0];
+    }
+    
+
 }

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Through
   - EnemySpirit
+  - Exit
   layers:
   - Default
   - TransparentFX

@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4984695605933082}
   - component: {fileID: 212302624575471098}
-  - component: {fileID: 114792197780724032}
+  - component: {fileID: 114972306775865684}
   - component: {fileID: 50182382748204042}
   - component: {fileID: 70890531030708698}
   m_Layer: 0
@@ -78,7 +78,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0.0042030215, y: 0.014710426}
   m_Size: {x: 0.3066622, y: 0.63433933}
   m_Direction: 0
---- !u!114 &114792197780724032
+--- !u!114 &114972306775865684
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -86,14 +86,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1097294667169310}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81f14cdbdbd64de4b825be301c3e264e, type: 3}
+  m_Script: {fileID: 11500000, guid: 3ff4d3214abd2a44488c1f19abc8a332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isMoving: 1
-  speed: 1.6
-  speedAngle: 2.65
-  moveTime: 0.5
-  reachDist: 0.1
+  moveTime: 0.1
+  speed: 3.1
+  speedAngle: 5.63
+  ways: []
 --- !u!212 &212302624575471098
 SpriteRenderer:
   m_ObjectHideFlags: 1

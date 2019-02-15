@@ -19,7 +19,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4984695605933082}
-  - component: {fileID: 114576984356993344}
   - component: {fileID: 212302624575471098}
   - component: {fileID: 50182382748204042}
   - component: {fileID: 70890531030708698}
@@ -62,7 +61,7 @@ Rigidbody2D:
   m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 4
+  m_Constraints: 0
 --- !u!70 &70890531030708698
 CapsuleCollider2D:
   m_ObjectHideFlags: 1
@@ -78,21 +77,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0.0042030215, y: 0.014710426}
   m_Size: {x: 0.3066622, y: 0.63433933}
   m_Direction: 0
---- !u!114 &114576984356993344
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1097294667169310}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 865cf3ca4b5556640b5aa0ab73baf43c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isMoving: 1
-  speed: 3
-  speedAngle: 1.66
-  moveTime: 0.5
 --- !u!212 &212302624575471098
 SpriteRenderer:
   m_ObjectHideFlags: 1

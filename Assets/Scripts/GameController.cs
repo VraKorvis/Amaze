@@ -22,21 +22,24 @@ public class GameController : MonoBehaviour {
 
     [SerializeField] private RandomMazeGenerator rmg;
 
-    [SerializeField] private GameObject spiritsContainer;
-    [SerializeField] private List<GameObject> spiritsIsland;
-    [SerializeField] private List<GameObject> spiritsBackForth;
+    [HideInInspector] private GameObject spiritsContainer;
+    [SerializeField] private GameObject spirit;
+    [SerializeField] private GameObject spiritS;
 
     void Awake() {
         instance = this;
         modeOfController = ModeController.Dynamic;
+        spiritsContainer = new GameObject("EnemyContainer");
+        spiritsContainer.transform.position = new Vector3(-9.5f, -7.5f, 0);
     }
 
     public void NewGame() {
         StopAllCoroutines();
         var childs = spiritsContainer.transform.GetComponentsInChildren<Transform>();
-        for (int i = childs.Length-1; i > 0; i--) {
+        for (int i = childs.Length - 1; i > 0; i--) {
             Destroy(childs[i].gameObject);
         }
+
         GenerateMaze();
     }
 
@@ -56,38 +59,42 @@ public class GameController : MonoBehaviour {
         rmg.OnCreateMaze += InitialEnemyPosition;
         InitialPlayer();
         InitialEnemyPosition();
-        
     }
 
     public void SetPlayerPosition() {
         characterController.transform.position = startPoint.position;
+        characterController.transform.rotation = Quaternion.Euler(0, 0, 0);
+        ((PlayerController) characterController).vCam.transform.rotation = characterController.transform.rotation;
     }
 
     private void InitialPlayer() {
         SetPlayerPosition();
         characterController.isMoving = true;
         StartCoroutine(characterController.TurnCharacter());
-        StartCoroutine(characterController.Move());
-        ((PlayerController)characterController).vCam.gameObject.SetActive(true);
+        characterController.Move();
+        ((PlayerController) characterController).vCam.gameObject.SetActive(true);
     }
 
     private void InitialEnemyPosition() {
-        foreach (var e in spiritsIsland) {
-            var go = Instantiate<GameObject>(e);
+        for (int i = 0; i < WayPointController.instance.wayIsland.Length; i++) {
+            var go = Instantiate<GameObject>(spirit);
             go.transform.SetParent(spiritsContainer.transform, true);
-            AbstractPlayerController spirit = go.GetComponent<AbstractPlayerController>();
-            
-            //StartCoroutine(spirit.TurnCharacter());
-            //StartCoroutine(spirit.MoveUp());
-        }
-        foreach (var e in spiritsBackForth) {
-            var go = Instantiate<GameObject>(e);
-            go.transform.SetParent(spiritsContainer.transform, true);
-            AbstractPlayerController spirit = go.GetComponent<AbstractPlayerController>();
-           // StartCoroutine(spirit.TurnCharacter());
-           // StartCoroutine(spirit.Move());
+            AbstractEnemyController enemy = go.AddComponent<EnemyWayPointMove>();
+            enemy.ways = new Vector3[WayPointController.instance.wayIsland[i].positionCount];
+            WayPointController.instance.wayIsland[i].GetPositions(enemy.ways);
+            enemy.isMoving = true;
+            enemy.Move();
         }
 
+        for (int i = 0; i < WayPointController.instance.waySimple.Length; i++) {
+            var go = Instantiate<GameObject>(spirit);
+            go.transform.SetParent(spiritsContainer.transform, true);
+            AbstractEnemyController enemy = go.AddComponent<SpiritBezieMoving>();
+            enemy.ways = new Vector3[WayPointController.instance.waySimple[i].positionCount];
+            WayPointController.instance.waySimple[i].GetPositions(enemy.ways);
+            enemy.isMoving = true;
+            enemy.Move();
+        }
     }
 
     private void InitialPlayerPosition() {
@@ -97,7 +104,7 @@ public class GameController : MonoBehaviour {
             character.transform.position = startTile.Tile.transform.position;
             characterController.isMoving = true;
             StartCoroutine(characterController.TurnCharacter());
-            StartCoroutine(characterController.Move());
+            characterController.Move();
             ((PlayerController) characterController).vCam.gameObject.SetActive(true);
         }
     }
