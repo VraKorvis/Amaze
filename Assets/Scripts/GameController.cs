@@ -18,6 +18,7 @@ public class GameController : MonoBehaviour {
     public GameObject character;
     private AbstractPlayerController characterController;
     public ModeController modeOfController;
+    [SerializeField] private Transform startPoint;
 
     [SerializeField] private RandomMazeGenerator rmg;
 
@@ -58,7 +59,12 @@ public class GameController : MonoBehaviour {
         
     }
 
+    public void SetPlayerPosition() {
+        characterController.transform.position = startPoint.position;
+    }
+
     private void InitialPlayer() {
+        SetPlayerPosition();
         characterController.isMoving = true;
         StartCoroutine(characterController.TurnCharacter());
         StartCoroutine(characterController.Move());

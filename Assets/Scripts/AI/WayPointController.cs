@@ -11,9 +11,6 @@ public class WayPointController : MonoBehaviour {
     // Use this for initialization
     void Awake () {
 	    instance = this;
-	   
-	    
-
 	}
 	
 

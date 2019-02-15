@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ganerate.unity
     guid: a214a99071e4f4040b937a908cc48d94
+  - enabled: 1
+    path: Assets/Scenes/matrix.unity
+    guid: 6d05d6c5605f4bc4b9b6e886d96191d2
   m_configObjects: {}

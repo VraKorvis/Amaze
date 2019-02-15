@@ -69,6 +69,19 @@ public class PlayerController : AbstractPlayerController {
         isSpiningNow = false;
         yield return null;
     }
+
+    public void OnTriggerEnter2D(Collider2D other) {
+        if (other.CompareTag("EnemySpirit")) {
+            GameController.instance.SetPlayerPosition();
+        }
+    }
+    
+    public void OnCollisionEnter2D(Collision2D other) {
+        if (other.gameObject.CompareTag("EnemySpirit")) {
+            GameController.instance.SetPlayerPosition();
+        }
+    }
+
 }
 
 public enum TurnDirection {
