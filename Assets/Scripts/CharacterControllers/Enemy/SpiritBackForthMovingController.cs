@@ -27,7 +27,6 @@ public class SpiritBackForthMovingController : AbstractEnemyController {
             Debug.DrawLine(tPoint.transform.position, hit.collider.transform.position, Color.red);
             return true;
         }
-
         return false;
     }
 
@@ -43,10 +42,8 @@ public class SpiritBackForthMovingController : AbstractEnemyController {
                     StartCoroutine(TurnTo(Direction.Left));
                 }
             }
-
             yield return new WaitForFixedUpdate();
         }
-
         yield return null;
     }
 

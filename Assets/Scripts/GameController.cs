@@ -57,20 +57,17 @@ public class GameController : MonoBehaviour {
         SetController(modeOfController);
         rmg.OnCreateMaze += InitialPlayerPosition;
         rmg.OnCreateMaze += InitialEnemyPosition;
-        InitialPlayer();
         InitialEnemyPosition();
+        Restart();
     }
 
     public void SetPlayerPosition() {
-        characterController.transform.position = startPoint.position;
-        characterController.transform.rotation = Quaternion.Euler(0, 0, 0);
-        ((PlayerController) characterController).vCam.transform.rotation = characterController.transform.rotation;
+        ((PlayerController)characterController).SetPlayerPosition(startPoint.position);
     }
 
     private void InitialPlayer() {
-        SetPlayerPosition();
-        characterController.isMoving = true;
         StartCoroutine(characterController.TurnCharacter());
+        characterController.isMoving = false;
         characterController.Move();
         ((PlayerController) characterController).vCam.gameObject.SetActive(true);
     }
@@ -102,7 +99,7 @@ public class GameController : MonoBehaviour {
         if (startTile != null) {
             character.SetActive(true);
             character.transform.position = startTile.Tile.transform.position;
-            characterController.isMoving = true;
+            characterController.isMoving = false;
             StartCoroutine(characterController.TurnCharacter());
             characterController.Move();
             ((PlayerController) characterController).vCam.gameObject.SetActive(true);
@@ -123,5 +120,12 @@ public class GameController : MonoBehaviour {
     public void SwitchMode() {
         modeOfController = modeOfController == ModeController.Static ? ModeController.Dynamic : ModeController.Static;
         SetController(modeOfController);
+    }
+
+    public void Restart() {
+        StopAllCoroutines();
+        SetPlayerPosition();
+        InitialPlayer();
+        //InitialEnemyPosition();
     }
 }

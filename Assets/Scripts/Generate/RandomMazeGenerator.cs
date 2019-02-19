@@ -250,7 +250,7 @@ public class RandomMazeGenerator : MonoBehaviour {
         var sr = tile.Tile.GetComponent<SpriteRenderer>();
         sr.sprite = type == TileTypeMaze.Ground ? null : sprites[(int) type];
         var bc = tile.Tile.GetComponent<BoxCollider2D>();
-        bc.enabled = type == TileTypeMaze.Ground ? false : true;
+        bc.enabled = type != TileTypeMaze.Ground;
         tile.CalculateAutotileID();
     }
 

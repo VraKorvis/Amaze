@@ -37,18 +37,18 @@ public class DirectionController : AbstractPlayerController {
         rb2d.MovePosition(rb2d.position + direction * speed * Time.fixedDeltaTime);
     }
 
-    private void MoveTouchDir(TurnDirection dir) {
+    private void MoveTouchDir(Direction dir) {
         switch (dir) {
-            case TurnDirection.UP:
+            case Direction.Top:
                 direction = rb2dTransform.up;
                 break;
-            case TurnDirection.LEFT:
+            case Direction.Left:
                 direction = -rb2dTransform.right;
                 break;
-            case TurnDirection.RIGHT:
+            case Direction.Right:
                 direction = rb2dTransform.right;
                 break;
-            case TurnDirection.DOWN:
+            case Direction.Bot:
                 direction = -rb2dTransform.up;
                 break;
         }
@@ -98,20 +98,20 @@ public class DirectionController : AbstractPlayerController {
                         if (swipeType.x != 0.0f) {
                             if (swipeType.x > 0.0f) {
                                 // MOVE RIGHT
-                                MoveTouchDir(TurnDirection.RIGHT);
+                                MoveTouchDir(Direction.Right);
                             } else {
                                 // MOVE LEFT
-                                MoveTouchDir(TurnDirection.LEFT);
+                                MoveTouchDir(Direction.Left);
                             }
                         }
 
                         if (swipeType.y != 0.0f) {
                             if (swipeType.y > 0.0f) {
                                 // MOVE UP
-                                MoveTouchDir(TurnDirection.UP);
+                                MoveTouchDir(Direction.Top);
                             } else {
                                 // MOVE DOWN
-                                MoveTouchDir(TurnDirection.DOWN);
+                                MoveTouchDir(Direction.Bot);
                             }
                         }
                     }
