@@ -39,7 +39,6 @@ public class GameController : MonoBehaviour {
         for (int i = childs.Length - 1; i > 0; i--) {
             Destroy(childs[i].gameObject);
         }
-
         GenerateMaze();
     }
 
@@ -55,8 +54,8 @@ public class GameController : MonoBehaviour {
 
     void Start() {
         SetController(modeOfController);
-        rmg.OnCreateMaze += InitialPlayerPosition;
-        rmg.OnCreateMaze += InitialEnemyPosition;
+       // rmg.OnCreateMaze += InitialPlayerPosition;
+       // rmg.OnCreateMaze += InitialEnemyPosition;
         InitialEnemyPosition();
         Restart();
     }
@@ -68,6 +67,7 @@ public class GameController : MonoBehaviour {
     private void InitialPlayer() {
         StartCoroutine(characterController.TurnCharacter());
         characterController.isMoving = false;
+        ((PlayerController)characterController).isSpiningNow = false;
         characterController.Move();
         ((PlayerController) characterController).vCam.gameObject.SetActive(true);
     }
@@ -79,7 +79,7 @@ public class GameController : MonoBehaviour {
             AbstractEnemyController enemy = go.AddComponent<EnemyWayPointMove>();
             enemy.ways = new Vector3[WayPointController.instance.wayIsland[i].positionCount];
             WayPointController.instance.wayIsland[i].GetPositions(enemy.ways);
-            enemy.isMoving = true;
+            enemy.isMoving = false;
             enemy.Move();
         }
 
@@ -89,7 +89,7 @@ public class GameController : MonoBehaviour {
             AbstractEnemyController enemy = go.AddComponent<SpiritBezieMoving>();
             enemy.ways = new Vector3[WayPointController.instance.waySimple[i].positionCount];
             WayPointController.instance.waySimple[i].GetPositions(enemy.ways);
-            enemy.isMoving = true;
+            enemy.isMoving = false;
             enemy.Move();
         }
     }

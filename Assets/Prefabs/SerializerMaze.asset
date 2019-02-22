@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe705440618ba144b8067a010dd4a292, type: 3}
+  m_Name: SerializerMaze
+  m_EditorClassIdentifier: 
+  jsonData: '{"layers":[]}'
+  path: "D:/\u0441sharp/maze/PennyPixel_2DTilemapProject/Amaze/Assets/level/01.txt"
+  ruleTile: {fileID: 11400000, guid: 54a2872a65d753b428788ff604051d47, type: 2}

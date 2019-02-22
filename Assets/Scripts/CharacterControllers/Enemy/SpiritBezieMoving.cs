@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class SpiritBezieMoving : AbstractEnemyController {
-    private float reachDist = 1.0f;
-    public int count_points = 20;
+    private float reachDist = .7f;
+    public int count_points = 15;
 
     public void Awake() {
         base.Init();

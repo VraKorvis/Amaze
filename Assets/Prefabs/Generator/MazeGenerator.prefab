@@ -1,21 +1,11 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &100100000
-Prefab:
-  m_ObjectHideFlags: 1
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications: []
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1586428990353976}
-  m_IsPrefabAsset: 1
 --- !u!1 &1586428990353976
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4643979958047764}
@@ -29,9 +19,10 @@ GameObject:
   m_IsActive: 1
 --- !u!4 &4643979958047764
 Transform:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1586428990353976}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 17.436518, y: -108.999084, z: -4.84935}
@@ -42,9 +33,10 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &114254878811304862
 MonoBehaviour:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1586428990353976}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -55,8 +47,9 @@ MonoBehaviour:
   mazeWidth: 11
   mazeHeight: 11
   mazeContainer: {fileID: 0}
-  tilePrefab: {fileID: 1505274541876418, guid: b21dfef9316130b4db1d0b4bde709591, type: 2}
+  tilePrefab: {fileID: 1505274541876418, guid: b21dfef9316130b4db1d0b4bde709591, type: 3}
   tileSize: {x: 16, y: 16}
   mazeTexure: {fileID: 2800000, guid: 3b30003999f7c419b878b6e3e3948812, type: 3}
+  countLoop: 0
   delay: 0.1
   slide: {fileID: 0}

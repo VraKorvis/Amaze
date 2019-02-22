@@ -22,6 +22,13 @@ public class SerializerMazeEditor : Editor {
             //    script.MazeToJson();
             //}
         }
+
+        if (GUILayout.Button("ClearTiles Attention!!!")) {
+            script.Clear();
+            //if (Application.isPlaying) {
+            //    script.MazeToJson();
+            //}
+        }
     }
 
 }

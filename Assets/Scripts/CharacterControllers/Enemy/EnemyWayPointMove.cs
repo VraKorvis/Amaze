@@ -15,6 +15,7 @@ public class EnemyWayPointMove : AbstractEnemyController {
     }
 
     public override void Move() {
+        isMoving = true;
         StartCoroutine(SmoothMovement());
     }
 
