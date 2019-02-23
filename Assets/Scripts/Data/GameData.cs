@@ -11,6 +11,7 @@ public class GameData {
 [Serializable]
 public class Layer {
     public TileD[] tiles;
+    public LayerType type;
 }
 
 [Serializable]
@@ -23,11 +24,10 @@ public class TileD {
         this.nameRuleTile = nameRuleTile;
     }
 }
-
+[Serializable]
 public enum LayerType {
-    Ground =0,
+    Ground = 0,
     Wall = 5,
     Trap,
     Shadow = 10
-
 }
